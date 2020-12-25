@@ -1,3 +1,5 @@
+package Classes;
+
 import java.io.Serializable;
 
 public class Poll implements Serializable {
