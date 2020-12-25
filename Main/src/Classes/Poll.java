@@ -1,8 +1,6 @@
 package Classes;
 
-import java.io.Serializable;
-
-public class Poll implements Serializable {
+public class Poll {
     private String name;
     private int maxResponses;
     private long id;
