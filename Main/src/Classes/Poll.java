@@ -5,7 +5,7 @@ import java.util.UUID;
 public class Poll {
     private String name;
     private int maxResponses;
-    private String id;
+    private final String id;
 
     public Poll (String name, int maxResponses) {
         this.name = name;
