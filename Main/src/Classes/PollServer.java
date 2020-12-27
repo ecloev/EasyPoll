@@ -39,5 +39,4 @@ public class PollServer {
         PollServer server = new PollServer(2020);
         server.execute();
     }
-
 }
