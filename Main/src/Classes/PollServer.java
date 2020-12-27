@@ -33,4 +33,9 @@ public class PollServer {
         }
     }
 
+    public static void main(String[] args) {
+        PollServer server = new PollServer(2020);
+        server.execute();
+    }
+
 }
