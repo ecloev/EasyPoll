@@ -1,3 +1,5 @@
+package Classes;
+
 import javax.swing.*;
 
 public class PollClient extends JComponent implements Runnable {
