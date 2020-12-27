@@ -7,8 +7,8 @@ public class Poll {
     private String name;
     private int maxResponses;
     private final String id;
-    private ArrayList<String> questions;
-    private ArrayList<String[]> answerChoices;
+    private final ArrayList<String> questions;
+    private final ArrayList<String[]> answerChoices;
 
     public Poll (String name, int maxResponses) {
         this.name = name;
@@ -37,4 +37,8 @@ public class Poll {
     public void setName(String name) {
         this.name = name;
     }
+
+    public ArrayList<String> getQuestions() { return this.questions; }
+
+    public ArrayList<String[]> getAnswerChoices() { return this.answerChoices; }
 }
