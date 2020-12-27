@@ -1,16 +1,21 @@
 package Classes;
 
+import java.util.ArrayList;
 import java.util.UUID;
 
 public class Poll {
     private String name;
     private int maxResponses;
     private final String id;
+    private final ArrayList<String> questions;
+    private final ArrayList<String[]> answerChoices;
 
     public Poll (String name, int maxResponses) {
         this.name = name;
         this.maxResponses = maxResponses;
         this.id = UUID.randomUUID().toString();
+        questions = new ArrayList<>();
+        answerChoices = new ArrayList<>();
     }
 
     public int getMaxResponses() {
@@ -32,4 +37,8 @@ public class Poll {
     public void setName(String name) {
         this.name = name;
     }
+
+    public ArrayList<String> getQuestions() { return this.questions; }
+
+    public ArrayList<String[]> getAnswerChoices() { return this.answerChoices; }
 }
