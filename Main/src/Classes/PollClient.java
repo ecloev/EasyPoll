@@ -20,7 +20,11 @@ public class PollClient extends JComponent implements Runnable {
 
     //New Poll Frame
     private JFrame newPollFrame;
-    private JTextField pollID;
+    private JLabel pollID;
+    private JTextField question;
+    private JTextField response;
+    private int responseCount = 1;
+    private JButton addResponse;
     private JButton confirm;
 
 
@@ -28,12 +32,29 @@ public class PollClient extends JComponent implements Runnable {
         @Override
         public void actionPerformed(ActionEvent e) {
             if (e.getSource() == newPollButton) {
+                try {
+                    String pollName = JOptionPane.showInputDialog(null, "Enter Poll Name: ",
+                            "EasyPoll", JOptionPane.INFORMATION_MESSAGE);
+                    Poll userPoll = new Poll(pollName, 10, "coolguy");
+                    pollID.setText(userPoll.getId());
+                } catch (IOException error) {
+                    error.printStackTrace();
+                }
+
                 loginFrame.dispose();
+                newPollFrame.setVisible(true);
             }
             if (e.getSource() == existingPollButton) {
                 String pollID = JOptionPane.showInputDialog(null, "Enter the poll's ID: ",
                         "EasyPoll", JOptionPane.INFORMATION_MESSAGE);
                 loginFrame.dispose();
+            }
+
+            if(e.getSource() == addResponse) {
+                if (response.getText().equals("")) {
+                    JOptionPane.showMessageDialog(null, "Response Box is Empty", "EasyPoll",
+                            JOptionPane.WARNING_MESSAGE);
+                }
             }
         }
     };
@@ -72,8 +93,49 @@ public class PollClient extends JComponent implements Runnable {
 
             newPollButton.addActionListener(actionListener);
             existingPollButton.addActionListener(actionListener);
-            
+
             //NEW POLL FRAME
+            newPollFrame = new JFrame("EasyPoll");
+            Container pollContent = newPollFrame.getContentPane();
+            pollContent.setLayout(new BorderLayout());
+
+            newPollFrame.setSize(350, 150); // Size of the window
+            newPollFrame.setLocationRelativeTo(null); // opens in middle of screen
+            newPollFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); // program stops when window is closed
+            newPollFrame.setVisible(false); // you can see it now
+
+            pollID = new JLabel("");
+            pollID.setBounds(100, 0, 150, 50);
+            JLabel pollIDText = new JLabel("Poll ID: ", SwingConstants.RIGHT);
+            pollIDText.setBounds(0, 0, 150, 50);
+
+            JPanel idPanel = new JPanel();
+            idPanel.add(pollIDText, BorderLayout.EAST);
+            idPanel.add(pollID, BorderLayout.WEST);
+            newPollFrame.add(idPanel, BorderLayout.NORTH);
+
+            JPanel questionPanel = new JPanel();
+            question = new JTextField("", 30);
+            response = new JTextField("", 20);
+            JLabel prompt = new JLabel("Write question here: ");
+            JLabel answersPrompt = new JLabel("Response #" + responseCount + ": ");
+            addResponse = new JButton("add");
+            confirm = new JButton("Confirm Poll");
+            questionPanel.add(prompt, BorderLayout.WEST);
+            questionPanel.add(question, BorderLayout.EAST);
+            questionPanel.add(answersPrompt, BorderLayout.SOUTH);
+            questionPanel.add(response, BorderLayout.SOUTH);
+            questionPanel.add(addResponse, BorderLayout.SOUTH);
+            questionPanel.add(confirm, BorderLayout.SOUTH);
+            newPollFrame.add(questionPanel, BorderLayout.CENTER);
+
+
+            addResponse.addActionListener(actionListener);
+            confirm.addActionListener(actionListener);
+
+
+
+
 
         }
 
