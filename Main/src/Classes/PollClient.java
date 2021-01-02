@@ -60,24 +60,48 @@ public class PollClient extends JComponent implements Runnable {
                 newPollFrame.setVisible(true);
             }
             if (e.getSource() == existingPollButton) {
-                String pollID = JOptionPane.showInputDialog(null, "Enter the poll's ID: ",
-                        "EasyPoll", JOptionPane.INFORMATION_MESSAGE);
+                String[] optionsCase2 = {"Pollee", "Poller"};
+                String polleeOrPoller = (String) JOptionPane.showInputDialog(null,
+                        "Are you the pollee or the poller?",
+                        "EasyPoll", JOptionPane.PLAIN_MESSAGE,
+                        null, optionsCase2, null);
+
+                if (polleeOrPoller.equals("Pollee")) {
+                    String pollID = JOptionPane.showInputDialog(null,
+                            "Enter the Poll's ID", "EasyPoll", JOptionPane.PLAIN_MESSAGE);
+                    writer.write("2");
+                    writer.println();
+                    writer.write(pollID);
+                } else if (polleeOrPoller.equals("Poller")) {
+                    String pollID = JOptionPane.showInputDialog(null,
+                            "Enter the Poll's ID", "EasyPoll", JOptionPane.PLAIN_MESSAGE);
+                    String pollPassword = JOptionPane.showInputDialog(null,
+                            "Enter the Poll's password", "EasyPoll", JOptionPane.PLAIN_MESSAGE);
+                    writer.write("3");
+                    writer.println();
+                    writer.write(pollID);
+                    writer.println();
+                    writer.write(pollPassword);
+                }
+
                 loginFrame.dispose();
             }
 
             if (e.getSource() == addResponse) {
-                if (response.getText().equals("") || response.getText().equals("*added*")) {
+                if (response.getText().equals("") || response.getText().equals("*Added*")) {
                     JOptionPane.showMessageDialog(null, "Response Box is Empty", "EasyPoll",
                             JOptionPane.WARNING_MESSAGE);
                 } else {
                     userPoll.addAnswerChoice(response.getText());
                     responseCount++;
-                    response.setText("*added*");
+                    response.setText("*Added*");
                     answersPrompt.setText("Response #" + responseCount + ": ");
                 }
             }
             if (e.getSource() == confirm) {
                 userPoll.setQuestion(question.getText());
+                writer.write("1");
+                writer.println();
                 writer.write(userPoll.getId());
                 writer.println();
                 writer.write(responseCount);
