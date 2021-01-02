@@ -4,14 +4,21 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.PrintWriter;
 import java.net.Socket;
+import java.util.ArrayList;
 
 public class PollClient extends JComponent implements Runnable {
 
     private final String hostname;
     private final int port;
     private static boolean isUserValid = true;
+    private Poll userPoll;
+    private BufferedReader reader;
+    private PrintWriter writer;
 
     //Login Frame
     private JFrame loginFrame;
@@ -21,6 +28,7 @@ public class PollClient extends JComponent implements Runnable {
     //New Poll Frame
     private JFrame newPollFrame;
     private JLabel pollID;
+    private JLabel answersPrompt;
     private JTextField question;
     private JTextField response;
     private int responseCount = 1;
@@ -35,7 +43,7 @@ public class PollClient extends JComponent implements Runnable {
                 try {
                     String pollName = JOptionPane.showInputDialog(null, "Enter Poll Name: ",
                             "EasyPoll", JOptionPane.INFORMATION_MESSAGE);
-                    Poll userPoll = new Poll(pollName, 10, "coolguy");
+                    userPoll = new Poll(pollName, 10, "coolguy");
                     pollID.setText(userPoll.getId());
                 } catch (IOException error) {
                     error.printStackTrace();
@@ -50,11 +58,36 @@ public class PollClient extends JComponent implements Runnable {
                 loginFrame.dispose();
             }
 
-            if(e.getSource() == addResponse) {
-                if (response.getText().equals("")) {
+            if (e.getSource() == addResponse) {
+                if (response.getText().equals("") || response.getText().equals("*added*")) {
                     JOptionPane.showMessageDialog(null, "Response Box is Empty", "EasyPoll",
                             JOptionPane.WARNING_MESSAGE);
+                } else {
+                    userPoll.addAnswerChoice(response.getText());
+                    responseCount++;
+                    response.setText("*added*");
+                    answersPrompt.setText("Response #" + responseCount + ": ");
                 }
+            }
+            if (e.getSource() == confirm) {
+                userPoll.setQuestion(question.getText());
+                writer.write(userPoll.getId());
+                writer.println();
+                writer.write(responseCount);
+                writer.println();
+                for (int i = 0; i < userPoll.getAnswerChoices().size(); i++) {
+                    writer.write(userPoll.getAnswerChoices().get(i));
+                    writer.println();
+                }
+                writer.flush();
+                newPollFrame.dispose();
+                String message = "New Poll created with the following info:\n"
+                        + "Poll ID: " + userPoll.getId() + "\nQuestion: " + userPoll.getQuestion() + "\n";
+                for (int i = 0; i < userPoll.getAnswerChoices().size(); i++) {
+                    message += (i + 1) + ".) " + userPoll.getAnswerChoices().get(i) +"\n";
+                }
+                JOptionPane.showMessageDialog(null, message, "EasyPoll",
+                        JOptionPane.INFORMATION_MESSAGE);
             }
         }
     };
@@ -99,7 +132,7 @@ public class PollClient extends JComponent implements Runnable {
             Container pollContent = newPollFrame.getContentPane();
             pollContent.setLayout(new BorderLayout());
 
-            newPollFrame.setSize(350, 150); // Size of the window
+            newPollFrame.setSize(350, 180); // Size of the window
             newPollFrame.setLocationRelativeTo(null); // opens in middle of screen
             newPollFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); // program stops when window is closed
             newPollFrame.setVisible(false); // you can see it now
@@ -118,7 +151,7 @@ public class PollClient extends JComponent implements Runnable {
             question = new JTextField("", 30);
             response = new JTextField("", 20);
             JLabel prompt = new JLabel("Write question here: ");
-            JLabel answersPrompt = new JLabel("Response #" + responseCount + ": ");
+            answersPrompt = new JLabel("Response #" + responseCount + ": ");
             addResponse = new JButton("add");
             confirm = new JButton("Confirm Poll");
             questionPanel.add(prompt, BorderLayout.WEST);
@@ -144,6 +177,8 @@ public class PollClient extends JComponent implements Runnable {
             Socket socket = new Socket(hostname, port);
             JOptionPane.showMessageDialog(null, "Connected to the Chat Server", "Messenger Connection",
                     JOptionPane.INFORMATION_MESSAGE);
+            reader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+            writer = new PrintWriter(socket.getOutputStream());
 
         } catch (IOException e) {
             JOptionPane.showMessageDialog(null, "Server is Not Online", "Messenger Connection",

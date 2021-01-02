@@ -9,8 +9,8 @@ public class Poll {
     private String name;
     private int maxResponses;
     private final String id;
-    private final ArrayList<String> questions;
-    private final ArrayList<String[]> answerChoices;
+    private String question;
+    private final ArrayList<String> answerChoices;
     private final String pollPassword;
     private final LocalDateTime creationDate;
     public File f;
@@ -21,7 +21,7 @@ public class Poll {
         this.id = UUID.randomUUID().toString();
         this.pollPassword = pollPassword;
         this.creationDate = LocalDateTime.now();
-        questions = new ArrayList<>();
+        question = "";
         answerChoices = new ArrayList<>();
         f = new File("PollData");
 
@@ -52,9 +52,17 @@ public class Poll {
         this.name = name;
     }
 
-    public ArrayList<String> getQuestions() { return this.questions; }
+    public String getQuestion() { return this.question; }
 
-    public ArrayList<String[]> getAnswerChoices() { return this.answerChoices; }
+    public void setQuestion(String question) {
+        this.question = question;
+    }
+
+    public ArrayList<String> getAnswerChoices() { return this.answerChoices; }
+
+    public void addAnswerChoice(String ans) {
+        answerChoices.add(ans);
+    }
 
     public String getPollPassword() { return this.pollPassword; }
 

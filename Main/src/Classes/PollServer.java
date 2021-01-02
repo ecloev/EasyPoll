@@ -22,6 +22,9 @@ public class PollServer {
                     Socket socket = serverSocket.accept();
                     System.out.println("A User Has Connected.");
 
+                    BufferedReader reader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+                    PrintWriter writer = new PrintWriter(socket.getOutputStream());
+
                     UserThread newUser = new UserThread(socket, this);
                     userThreads.add(newUser);
                     newUser.start();
