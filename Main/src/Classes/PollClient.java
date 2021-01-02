@@ -11,6 +11,13 @@ import java.io.PrintWriter;
 import java.net.Socket;
 import java.util.ArrayList;
 
+/**
+ * PollClient.java
+ *
+ * This class handles the GUI and facilitates communication between the client and server.
+ *
+ */
+
 public class PollClient extends JComponent implements Runnable {
 
     private final String hostname;

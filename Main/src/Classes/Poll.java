@@ -5,6 +5,13 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.UUID;
 
+/**
+ * Poll.java
+ *
+ * Abstraction for a poll object
+ *
+ */
+
 public class Poll {
     private String name;
     private int maxResponses;

@@ -4,6 +4,13 @@ import java.io.*;
 import java.net.*;
 import java.util.*;
 
+/**
+ * PollServer.java
+ *
+ * Server that handles the parsing and processing of polls
+ *
+ */
+
 public class PollServer {
     private final int port;
     private final ArrayList<UserThread> userThreads;
