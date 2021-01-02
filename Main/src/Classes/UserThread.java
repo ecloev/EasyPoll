@@ -47,15 +47,10 @@ public class UserThread extends Thread {
                     }
                 }
                 createPoll(pollID, question, answers);
-            } else if ( response.equals("2")) {
+            } else if (response.equals("2")) {
 
-            }
-            while (true) {
+            } else if (response.equals("3")) {
 
-
-                if (response != null) {
-
-                }
             }
         } catch (IOException ex) {
             //server.removeUser(tempUsername, this);
@@ -68,8 +63,8 @@ public class UserThread extends Thread {
         try (BufferedWriter bw = new BufferedWriter(new FileWriter(users, true))) {
             bw.write(question);
             bw.newLine();
-            for (int i = 0; i < answers.size(); i++) {
-                bw.write(answers.get(i));
+            for (String answer : answers) {
+                bw.write(answer);
                 bw.newLine();
             }
             bw.flush();
