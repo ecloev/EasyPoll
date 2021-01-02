@@ -7,9 +7,8 @@ import java.util.UUID;
 
 /**
  * Poll.java
- *
+ * <p>
  * Abstraction for a poll object
- *
  */
 
 public class Poll {
@@ -22,7 +21,7 @@ public class Poll {
     private final LocalDateTime creationDate;
     public File f;
 
-    public Poll (String name, int maxResponses, String pollPassword) throws IOException {
+    public Poll(String name, int maxResponses, String pollPassword) throws IOException {
         this.name = name;
         this.maxResponses = maxResponses;
         this.id = UUID.randomUUID().toString();
@@ -59,19 +58,27 @@ public class Poll {
         this.name = name;
     }
 
-    public String getQuestion() { return this.question; }
+    public String getQuestion() {
+        return this.question;
+    }
 
     public void setQuestion(String question) {
         this.question = question;
     }
 
-    public ArrayList<String> getAnswerChoices() { return this.answerChoices; }
+    public ArrayList<String> getAnswerChoices() {
+        return this.answerChoices;
+    }
 
     public void addAnswerChoice(String ans) {
         answerChoices.add(ans);
     }
 
-    public String getPollPassword() { return this.pollPassword; }
+    public String getPollPassword() {
+        return this.pollPassword;
+    }
 
-    public LocalDateTime getCreationDate() { return creationDate; }
+    public LocalDateTime getCreationDate() {
+        return creationDate;
+    }
 }

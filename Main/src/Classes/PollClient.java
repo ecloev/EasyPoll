@@ -13,9 +13,8 @@ import java.util.ArrayList;
 
 /**
  * PollClient.java
- *
+ * <p>
  * This class handles the GUI and facilitates communication between the client and server.
- *
  */
 
 public class PollClient extends JComponent implements Runnable {
@@ -115,93 +114,92 @@ public class PollClient extends JComponent implements Runnable {
                 String message = "New Poll created with the following info:\n"
                         + "Poll ID: " + userPoll.getId() + "\nQuestion: " + userPoll.getQuestion() + "\n";
                 for (int i = 0; i < userPoll.getAnswerChoices().size(); i++) {
-                    message += (i + 1) + ".) " + userPoll.getAnswerChoices().get(i) +"\n";
+                    message += (i + 1) + ".) " + userPoll.getAnswerChoices().get(i) + "\n";
                 }
                 JOptionPane.showMessageDialog(null, message, "EasyPoll",
                         JOptionPane.INFORMATION_MESSAGE);
             }
         }
     };
+
     public PollClient(String hostname, int port) {
         this.hostname = hostname;
         this.port = port;
     }
-        @Override
+
+    @Override
     public void run() {
-            // ***** Login Frame *****//
-            loginFrame = new JFrame("Start Up - EasyPoll");
-            Container loginContent = loginFrame.getContentPane();
-            loginContent.setLayout(new BorderLayout());
+        // ***** Login Frame *****//
+        loginFrame = new JFrame("Start Up - EasyPoll");
+        Container loginContent = loginFrame.getContentPane();
+        loginContent.setLayout(new BorderLayout());
 
-            newPollButton = new JButton("Create New Poll");
-            existingPollButton = new JButton("Find Existing Poll");
+        newPollButton = new JButton("Create New Poll");
+        existingPollButton = new JButton("Find Existing Poll");
 
-            loginFrame.setSize(350, 150); // Size of the window
-            loginFrame.setLocationRelativeTo(null); // opens in middle of screen
-            loginFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); // program stops when window is closed
-            loginFrame.setVisible(true); // you can see it now
+        loginFrame.setSize(350, 150); // Size of the window
+        loginFrame.setLocationRelativeTo(null); // opens in middle of screen
+        loginFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); // program stops when window is closed
+        loginFrame.setVisible(true); // you can see it now
 
-            JPanel newPollPanel = new JPanel(); // creates a new poll section
-            JPanel existingPollPanel = new JPanel(); // creates an existing poll section
+        JPanel newPollPanel = new JPanel(); // creates a new poll section
+        JPanel existingPollPanel = new JPanel(); // creates an existing poll section
 
-            newPollButton = new JButton("Create New Poll");
-            newPollButton.setPreferredSize(new Dimension(140, 100));
-            newPollPanel.add(newPollButton, BorderLayout.EAST); // adds Button to new poll panel
+        newPollButton = new JButton("Create New Poll");
+        newPollButton.setPreferredSize(new Dimension(140, 100));
+        newPollPanel.add(newPollButton, BorderLayout.EAST); // adds Button to new poll panel
 
-            existingPollButton = new JButton("Find Existing Poll");
-            existingPollButton.setPreferredSize(new Dimension(140, 100));
-            existingPollPanel.add(existingPollButton); // adds Button to new poll panel
+        existingPollButton = new JButton("Find Existing Poll");
+        existingPollButton.setPreferredSize(new Dimension(140, 100));
+        existingPollPanel.add(existingPollButton); // adds Button to new poll panel
 
-            loginFrame.add(newPollPanel, BorderLayout.WEST); // puts username panel on top
-            loginFrame.add(existingPollPanel, BorderLayout.EAST); // puts password panel in middle
+        loginFrame.add(newPollPanel, BorderLayout.WEST); // puts username panel on top
+        loginFrame.add(existingPollPanel, BorderLayout.EAST); // puts password panel in middle
 
-            newPollButton.addActionListener(actionListener);
-            existingPollButton.addActionListener(actionListener);
+        newPollButton.addActionListener(actionListener);
+        existingPollButton.addActionListener(actionListener);
 
-            //NEW POLL FRAME
-            newPollFrame = new JFrame("EasyPoll");
-            Container pollContent = newPollFrame.getContentPane();
-            pollContent.setLayout(new BorderLayout());
+        //NEW POLL FRAME
+        newPollFrame = new JFrame("EasyPoll");
+        Container pollContent = newPollFrame.getContentPane();
+        pollContent.setLayout(new BorderLayout());
 
-            newPollFrame.setSize(350, 180); // Size of the window
-            newPollFrame.setLocationRelativeTo(null); // opens in middle of screen
-            newPollFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); // program stops when window is closed
-            newPollFrame.setVisible(false); // you can see it now
+        newPollFrame.setSize(350, 180); // Size of the window
+        newPollFrame.setLocationRelativeTo(null); // opens in middle of screen
+        newPollFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); // program stops when window is closed
+        newPollFrame.setVisible(false); // you can see it now
 
-            pollID = new JLabel("");
-            pollID.setBounds(100, 0, 150, 50);
-            JLabel pollIDText = new JLabel("Poll ID: ", SwingConstants.RIGHT);
-            pollIDText.setBounds(0, 0, 150, 50);
+        pollID = new JLabel("");
+        pollID.setBounds(100, 0, 150, 50);
+        JLabel pollIDText = new JLabel("Poll ID: ", SwingConstants.RIGHT);
+        pollIDText.setBounds(0, 0, 150, 50);
 
-            JPanel idPanel = new JPanel();
-            idPanel.add(pollIDText, BorderLayout.EAST);
-            idPanel.add(pollID, BorderLayout.WEST);
-            newPollFrame.add(idPanel, BorderLayout.NORTH);
+        JPanel idPanel = new JPanel();
+        idPanel.add(pollIDText, BorderLayout.EAST);
+        idPanel.add(pollID, BorderLayout.WEST);
+        newPollFrame.add(idPanel, BorderLayout.NORTH);
 
-            JPanel questionPanel = new JPanel();
-            question = new JTextField("", 30);
-            response = new JTextField("", 20);
-            JLabel prompt = new JLabel("Write question here: ");
-            answersPrompt = new JLabel("Response #" + responseCount + ": ");
-            addResponse = new JButton("add");
-            confirm = new JButton("Confirm Poll");
-            questionPanel.add(prompt, BorderLayout.WEST);
-            questionPanel.add(question, BorderLayout.EAST);
-            questionPanel.add(answersPrompt, BorderLayout.SOUTH);
-            questionPanel.add(response, BorderLayout.SOUTH);
-            questionPanel.add(addResponse, BorderLayout.SOUTH);
-            questionPanel.add(confirm, BorderLayout.SOUTH);
-            newPollFrame.add(questionPanel, BorderLayout.CENTER);
-
-
-            addResponse.addActionListener(actionListener);
-            confirm.addActionListener(actionListener);
+        JPanel questionPanel = new JPanel();
+        question = new JTextField("", 30);
+        response = new JTextField("", 20);
+        JLabel prompt = new JLabel("Write question here: ");
+        answersPrompt = new JLabel("Response #" + responseCount + ": ");
+        addResponse = new JButton("add");
+        confirm = new JButton("Confirm Poll");
+        questionPanel.add(prompt, BorderLayout.WEST);
+        questionPanel.add(question, BorderLayout.EAST);
+        questionPanel.add(answersPrompt, BorderLayout.SOUTH);
+        questionPanel.add(response, BorderLayout.SOUTH);
+        questionPanel.add(addResponse, BorderLayout.SOUTH);
+        questionPanel.add(confirm, BorderLayout.SOUTH);
+        newPollFrame.add(questionPanel, BorderLayout.CENTER);
 
 
+        addResponse.addActionListener(actionListener);
+        confirm.addActionListener(actionListener);
 
 
-
-        }
+    }
 
     public void execute() {
         try {

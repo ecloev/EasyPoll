@@ -6,9 +6,8 @@ import java.util.*;
 
 /**
  * PollServer.java
- *
+ * <p>
  * Server that handles the parsing and processing of polls
- *
  */
 
 public class PollServer {

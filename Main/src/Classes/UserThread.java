@@ -9,13 +9,12 @@ import java.util.Set;
 
 /**
  * UserThread.java
- *
+ * <p>
  * This thread handles connection for each connected client, so the server can
  * handle multiple clients at the same time.
- *
  */
 
-@SuppressWarnings({ "InfiniteLoopStatement", "ResultOfMethodCallIgnored" })
+@SuppressWarnings({"InfiniteLoopStatement", "ResultOfMethodCallIgnored"})
 public class UserThread extends Thread {
     private final Socket socket;
     private final PollServer server;
