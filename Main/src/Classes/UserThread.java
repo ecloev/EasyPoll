@@ -27,6 +27,7 @@ public class UserThread extends Thread {
 
     public void run() {
         try {
+            System.out.println("TESTING DONE HERE");
             InputStream input = socket.getInputStream();
             BufferedReader reader = new BufferedReader(new InputStreamReader(input));
 
@@ -34,18 +35,23 @@ public class UserThread extends Thread {
             writer = new PrintWriter(output, true);
 
             String response = reader.readLine();
+            System.out.println(response);
             if (response.equals("1")) {
                 String pollID = reader.readLine();
+                System.out.println("pollID: "+pollID);
                 String question = reader.readLine();
+                System.out.println("question: "+question);
                 ArrayList<String> answers = new ArrayList<>();
-                while(true) {
+                int numberOfAnswers = reader.read();
+                System.out.println(numberOfAnswers);
+                reader.readLine();
+                for (int i = 0; i < numberOfAnswers; i++) {
                     response = reader.readLine();
-                    if (response != null) {
-                        answers.add(reader.readLine());
-                    } else {
-                        break;
-                    }
+                    System.out.println("response: "+response);
+                    answers.add(response);
                 }
+
+                System.out.println("Testing: Create poll starts");
                 createPoll(pollID, question, answers);
             } else if (response.equals("2")) {
 
@@ -60,6 +66,9 @@ public class UserThread extends Thread {
 
     public void createPoll(String pollID, String question, ArrayList<String> answers) {
         File users = new File("Polls/" + pollID + ".txt");
+        if (users.exists()) {
+
+        }
         try (BufferedWriter bw = new BufferedWriter(new FileWriter(users, true))) {
             bw.write(question);
             bw.newLine();

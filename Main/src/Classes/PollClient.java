@@ -103,10 +103,13 @@ public class PollClient extends JComponent implements Runnable {
                 writer.println();
                 writer.write(userPoll.getId());
                 writer.println();
-                writer.write(responseCount);
+                writer.write(userPoll.getQuestion());
                 writer.println();
-                for (int i = 0; i < userPoll.getAnswerChoices().size(); i++) {
-                    writer.write(userPoll.getAnswerChoices().get(i));
+                ArrayList<String> answers = userPoll.getAnswerChoices();
+                writer.write(answers.size());
+                writer.println();
+                for (int i = 0; i < answers.size(); i++) {
+                    writer.write(answers.get(i));
                     writer.println();
                 }
                 writer.flush();
