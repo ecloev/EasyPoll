@@ -71,6 +71,23 @@ public class PollClient extends JComponent implements Runnable {
                     writer.write("2");
                     writer.println();
                     writer.write(pollID);
+                    writer.println();
+                    writer.flush();
+
+                    try {
+                        String question = reader.readLine();
+                        System.out.println("Question: " + question);
+                        int numOfAnswers = reader.read();
+                        System.out.println(numOfAnswers);
+                        ArrayList<String> answers = new ArrayList();
+                        for (int i = 0; i < numOfAnswers; i++) {
+                            String response = reader.readLine();
+                            answers.add(response);
+                            System.out.println("Response: " + response);
+                        }
+                    } catch (IOException error) {
+                        error.printStackTrace();
+                    }
                 } else if (polleeOrPoller.equals("Poller")) {
                     String pollID = JOptionPane.showInputDialog(null,
                             "Enter the Poll's ID", "EasyPoll", JOptionPane.PLAIN_MESSAGE);
