@@ -19,6 +19,7 @@ public class Poll {
     private final ArrayList<String> answerChoices;
     private final String pollPassword;
     private final LocalDateTime creationDate;
+    private boolean closed = false;
     public File f;
 
     public Poll(String name, int maxResponses, String pollPassword) throws IOException {
