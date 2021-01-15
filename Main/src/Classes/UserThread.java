@@ -1,5 +1,6 @@
 package Classes;
 
+import Exceptions.InvalidPasswordException;
 import Exceptions.PollNotFoundException;
 
 import java.io.*;
@@ -53,7 +54,14 @@ public class UserThread extends Thread {
                     e.printStackTrace();
                 }
             } else if (response.equals("3")) {
+                String pollID = reader.readLine();
+                String pollPassword = reader.readLine();
 
+                try {
+                    editPoll(pollID, pollPassword);
+                } catch (PollNotFoundException | InvalidPasswordException e) {
+                    e.printStackTrace();
+                }
             }
         } catch (IOException ex) {
             //server.removeUser(tempUsername, this);
@@ -75,6 +83,42 @@ public class UserThread extends Thread {
             bw.flush();
         } catch (IOException e) {
             e.printStackTrace();
+        }
+    }
+
+    private void editPoll(String pollID, String pollPassword) throws PollNotFoundException, InvalidPasswordException,
+            IOException {
+        File users = new File("Polls/" + pollID + ".txt");
+        if (!users.exists()) {
+            throw new PollNotFoundException("Poll with that ID does not exist!");
+        }
+
+        File dataFile = new File("PollData");
+
+        String partName = "";
+        String partResponses = "";
+        String partID = "";
+        String partPassword = "";
+
+        try (BufferedReader bufferedReader = new BufferedReader(new FileReader(dataFile))) {
+            String line = bufferedReader.readLine();
+            while (line != null) {
+                String[] parts = line.split(",");
+                if (parts[2].equals(pollID)) {
+                    partName = parts[0];
+                    partResponses = parts[1];
+                    partID = parts[2];
+                    partPassword = parts[3];
+                    break;
+                }
+                line = bufferedReader.readLine();
+            }
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+
+        if (!pollPassword.equals(partPassword)) {
+            throw new InvalidPasswordException("Poll passwords do not match!");
         }
     }
 
@@ -107,5 +151,4 @@ public class UserThread extends Thread {
             e.printStackTrace();
         }
     }
-
 }

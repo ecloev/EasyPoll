@@ -41,6 +41,13 @@ public class PollClient extends JComponent implements Runnable {
     private JButton addResponse;
     private JButton confirm;
 
+    //Edit Poll Frame
+    private JFrame editFrame;
+    private JLabel pollEditID;
+    private JButton changePassword;
+    private JButton changeMaxResponses;
+    private JButton closePoll;
+    private JButton viewResults; // when poll is closed
 
     ActionListener actionListener = new ActionListener() {
         @Override
@@ -98,6 +105,7 @@ public class PollClient extends JComponent implements Runnable {
                     writer.write(pollID);
                     writer.println();
                     writer.write(pollPassword);
+                    writer.println();
                 }
 
                 loginFrame.dispose();
