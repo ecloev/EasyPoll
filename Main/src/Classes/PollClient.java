@@ -49,7 +49,7 @@ public class PollClient extends JComponent implements Runnable {
     private JButton closePoll;
     private JButton viewResults; // when poll is closed
 
-    ActionListener actionListener = new ActionListener() {
+   ActionListener actionListener = new ActionListener() {
         @Override
         public void actionPerformed(ActionEvent e) {
             if (e.getSource() == newPollButton) {
@@ -83,18 +83,21 @@ public class PollClient extends JComponent implements Runnable {
 
                     try {
                         String question = reader.readLine();
-                        System.out.println("Question: " + question);
                         int numOfAnswers = reader.read();
-                        System.out.println(numOfAnswers);
-                        ArrayList<String> answers = new ArrayList();
+                        String[] answers = new String[numOfAnswers];
                         for (int i = 0; i < numOfAnswers; i++) {
                             String response = reader.readLine();
-                            answers.add(response);
-                            System.out.println("Response: " + response);
+                            answers[i] = response;
                         }
+                        String userAnswerChoice = (String) JOptionPane.showInputDialog(null, question,
+                                "EasyPoll", JOptionPane.PLAIN_MESSAGE, null, answers, null);
+                        writer.write(userAnswerChoice);
+                        writer.println();
+                        writer.flush();
                     } catch (IOException error) {
                         error.printStackTrace();
                     }
+
                 } else if (polleeOrPoller.equals("Poller")) {
                     String pollID = JOptionPane.showInputDialog(null,
                             "Enter the Poll's ID", "EasyPoll", JOptionPane.PLAIN_MESSAGE);
@@ -105,7 +108,6 @@ public class PollClient extends JComponent implements Runnable {
                     writer.write(pollID);
                     writer.println();
                     writer.write(pollPassword);
-                    writer.println();
                 }
 
                 loginFrame.dispose();
@@ -134,7 +136,7 @@ public class PollClient extends JComponent implements Runnable {
                 writer.write(answers.size());
                 writer.println();
                 for (int i = 0; i < answers.size(); i++) {
-                    writer.write(answers.get(i));
+                    writer.write(answers.get(i) + " = 0");
                     writer.println();
                 }
                 writer.flush();

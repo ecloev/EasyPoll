@@ -134,9 +134,7 @@ public class UserThread extends Thread {
             String numOfAnswers = br.readLine();
             try {
                 int num = Integer.parseInt(numOfAnswers);
-                System.out.println(num);
-                writer.write(numOfAnswers);
-                writer.println();
+                writer.write(num);
                 for (int i = 0; i < num; i++) {
                     String answer = br.readLine();
                     writer.write(answer);
@@ -146,7 +144,6 @@ public class UserThread extends Thread {
             } catch (NumberFormatException e) {
                 e.printStackTrace();
             }
-            System.out.println(numOfAnswers);
         } catch (IOException e) {
             e.printStackTrace();
         }
