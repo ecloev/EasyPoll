@@ -41,15 +41,8 @@ public class PollClient extends JComponent implements Runnable {
     private JButton addResponse;
     private JButton confirm;
 
-    //Edit Poll Frame
-    private JFrame editFrame;
-    private JLabel pollEditID;
-    private JButton changePassword;
-    private JButton changeMaxResponses;
-    private JButton closePoll;
-    private JButton viewResults; // when poll is closed
 
-   ActionListener actionListener = new ActionListener() {
+    ActionListener actionListener = new ActionListener() {
         @Override
         public void actionPerformed(ActionEvent e) {
             if (e.getSource() == newPollButton) {
@@ -94,6 +87,8 @@ public class PollClient extends JComponent implements Runnable {
                         writer.write(userAnswerChoice);
                         writer.println();
                         writer.flush();
+                        int totalResponses = reader.read();
+                        System.out.println(totalResponses);
                     } catch (IOException error) {
                         error.printStackTrace();
                     }
@@ -108,6 +103,8 @@ public class PollClient extends JComponent implements Runnable {
                     writer.write(pollID);
                     writer.println();
                     writer.write(pollPassword);
+                    writer.println();
+                    writer.flush();
                 }
 
                 loginFrame.dispose();
@@ -228,7 +225,7 @@ public class PollClient extends JComponent implements Runnable {
         addResponse.addActionListener(actionListener);
         confirm.addActionListener(actionListener);
 
-
+        //POLLER FRAME
     }
 
     public void execute() {
