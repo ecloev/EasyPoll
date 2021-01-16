@@ -51,7 +51,10 @@ public class UserThread extends Thread {
                 try {
                     flushPollData(pollID);
                     String answer = reader.readLine();
-                    talleyAnswer(pollID, answer);
+                    int totalResponses = talleyAnswer(pollID, answer);
+                    writer.write(totalResponses);
+                    writer.println();
+                    writer.flush();
                 } catch (PollNotFoundException e) {
                     e.printStackTrace();
                 }
@@ -151,7 +154,8 @@ public class UserThread extends Thread {
         }
     }
 
-    private void talleyAnswer(String pollID, String answer) throws PollNotFoundException{
+    private int talleyAnswer(String pollID, String answer) throws PollNotFoundException{
+        int result = 0;
         File users = new File("Polls/" + pollID + ".txt");
         if (!users.exists()) {
             throw new PollNotFoundException("Poll with that ID does not exist!");
@@ -162,9 +166,13 @@ public class UserThread extends Thread {
             while (line != null) {
                 if (line.startsWith(answer)) {
                     int count = Integer.parseInt(line.split(" = ")[1]) + 1;
+                    result += count;
                     lines.add(line.substring(0, line.length()-1) + count);
                 } else {
                     lines.add(line);
+                    if (line.contains(" = ")) {
+                        result += Integer.parseInt(line.split(" = ")[1]);
+                    }
                 }
                 line = br.readLine();
             }
@@ -178,6 +186,7 @@ public class UserThread extends Thread {
         } catch (IOException e) {
             e.printStackTrace();
         }
+        return result;
     }
 
 }
